@@ -46,18 +46,12 @@ public class ReadWriteLock {
 	 * @throws InterruptedException
 	 */
 	public synchronized void lockRead() throws InterruptedException {
-		while (writers > 0 || writeRequests > 0) {
-			wait();
-		}
-		readers++;
 	}
 
 	/**
 	 * unblocks any blocked thread
 	 */
 	public synchronized void unlockRead() {
-		readers--;
-		notifyAll();
 	}
 
 	/**
@@ -65,13 +59,6 @@ public class ReadWriteLock {
 	 * @throws InterruptedException
 	 */
 	public synchronized void lockWrite() throws InterruptedException {
-		writeRequests++;
-
-		while (readers > 0 || writers > 0) {
-			wait();
-		}
-		writeRequests--;
-		writers++;
 	}
 
 	/**
@@ -79,8 +66,6 @@ public class ReadWriteLock {
 	 * @throws InterruptedException
 	 */
 	public synchronized void unlockWrite() throws InterruptedException {
-		writers--;
-		notifyAll();
 	}
 
 	public static int getReaders() {
